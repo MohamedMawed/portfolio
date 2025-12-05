@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohamed Mabrouk | Software Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --yellow-primary: #f59e0b;
+            --yellow-light: #fbbf24;
+            --yellow-dark: #d97706;
+            --yellow-glow: rgba(245, 158, 11, 0.3);
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --text-primary: #1f2937;
+            --text-secondary: rgba(31, 41, 55, 0.7);
+            --light-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--light-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.35;
+            background: linear-gradient(135deg, #fcd34d, #fbbf24);
+        }
+
+        .blob-1 {
+            width: 700px;
+            height: 700px;
+            top: -300px;
+            left: -200px;
+            animation: float1 25s infinite ease-in-out;
+        }
+
+        .blob-2 {
+            width: 600px;
+            height: 600px;
+            bottom: -250px;
+            right: -150px;
+            animation: float2 30s infinite ease-in-out;
+        }
+
+        .blob-3 {
+            width: 500px;
+            height: 500px;
+            top: 40%;
+            left: 50%;
+            animation: float3 28s infinite ease-in-out;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 30px) scale(1.05); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-40px, -30px) scale(1.08); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-45%, -55%) scale(1.05); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.95); }
+            75% { transform: translate(-50px, -20px) scale(1.05); }
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Fixed left sidebar for hero */
+        .hero-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 380px;
+            height: 100vh;
+            padding: 40px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        /* Scrollable content area */
+        .content-area {
+            margin-left: 380px;
+            flex: 1;
+            padding: 40px 40px 40px 20px;
+            max-width: 900px;
+        }
+
+        /* Glass card styling */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.08),
+                inset 0 1px 1px rgba(255, 255, 255, 0.8),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.05);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.12),
+                inset 0 1px 1px rgba(255, 255, 255, 0.9),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.05);
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 40px 30px;
+            width: 100%;
+        }
+
+        .hero.glass-card {
+            margin-bottom: 0;
+        }
+
+        .hero-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 50px var(--yellow-glow);
+            border: 3px solid var(--yellow-primary);
+            display: block;
+        }
+
+
+        .hero h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--text-primary), var(--yellow-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--yellow-primary);
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .hero-location {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+
+        .hero-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            width: 100%;
+            max-width: 200px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            font-size: 0.9rem;
+        }
+
+        .hero-link:hover {
+            background: var(--yellow-primary);
+            color: white;
+            border-color: var(--yellow-primary);
+            box-shadow: 0 8px 30px var(--yellow-glow);
+        }
+
+        /* Section styling */
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 30px;
+            background: linear-gradient(180deg, var(--yellow-primary), var(--yellow-dark));
+            border-radius: 2px;
+        }
+
+        /* Experience cards */
+        .experience-item {
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border-left: 3px solid var(--yellow-primary);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .experience-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .experience-item:hover {
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .company-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--yellow-dark);
+        }
+
+        .experience-date {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .job-title {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .job-location {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .experience-item ul {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .experience-item li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .experience-item li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--yellow-primary);
+        }
+
+        /* Tech stack tags */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .tech-tag {
+            padding: 6px 14px;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--yellow-dark);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            background: var(--yellow-primary);
+            color: white;
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--yellow-primary), var(--yellow-dark));
+        }
+
+        .project-card:hover {
+            border-color: var(--yellow-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        /* Education */
+        .education-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .education-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--yellow-primary), var(--yellow-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .education-details h3 {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .education-details p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .gpa-badge {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--yellow-dark);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-sidebar {
+                width: 320px;
+            }
+
+            .content-area {
+                margin-left: 320px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .hero-sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                padding: 20px;
+            }
+
+            .content-area {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .glass-card {
+                padding: 25px;
+            }
+
+            .experience-header {
+                flex-direction: column;
+            }
+
+            .experience-date {
+                align-self: flex-start;
+            }
+
+            .hero-avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .hero-links {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero-link {
+                width: auto;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="layout">
+        <!-- Fixed Hero Sidebar -->
+        <aside class="hero-sidebar">
+            <section class="glass-card hero">
+                <img src="profile.jpg" alt="Mohamed Mabrouk" class="hero-avatar">
+                <h1>Mohamed Mabrouk</h1>
+                <p class="hero-subtitle">Senior Software Engineer</p>
+                <p class="hero-location">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    Berlin, Germany
+                </p>
+                <div class="hero-links">
+                    <a href="https://www.linkedin.com/in/mohamedmawed/" class="hero-link" target="_blank">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                        LinkedIn
+                    </a>
+                    <a href="https://github.com/mohamedmabrouk" class="hero-link" target="_blank">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                    <a href="mailto:mohmmedmoued55@gmail.com" class="hero-link">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        Email
+                    </a>
+                </div>
+            </section>
+        </aside>
+
+        <!-- Scrollable Content Area -->
+        <main class="content-area">
+            <!-- Experience Section -->
+            <section class="glass-card">
+                <h2 class="section-title">Experience</h2>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <span class="company-name">Nelly Solutions</span>
+                    <span class="experience-date">Jan 2025 - Present</span>
+                </div>
+                <p class="job-title">Senior Engineer <span style="color: var(--text-secondary); font-weight: 400;">(promoted from Software Engineer II)</span></p>
+                <p class="job-location">Berlin, Germany · Hybrid</p>
+                <ul>
+                    <li>Lead the digitalization of medical documents store</li>
+                    <li>Lead the integration with third party provider for medical documents in the dental space</li>
+                    <li>Currently leading the integration with a third party where we provide financial factoring services for them in Germany</li>
+                </ul>
+                <div class="tech-stack">
+                    <span class="tech-tag">Java</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Node.js</span>
+                    <span class="tech-tag">NextJS</span>
+                    <span class="tech-tag">TypeScript</span>
+                    <span class="tech-tag">AWS</span>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <span class="company-name">Klarna</span>
+                    <span class="experience-date">Oct 2021 - Dec 2024 · 3 yrs 3 mos</span>
+                </div>
+                <p class="job-title">Software Engineer</p>
+                <p class="job-location">Berlin, Germany · Full-time</p>
+                <ul>
+                    <li>Developed and maintained the wallet providers features (Apple Pay, Google Pay, Samsung Pay)</li>
+                    <li>Worked alongside designers and product managers to make sure the user experience is very smooth and easy for the customer group we target</li>
+                </ul>
+                <div class="tech-stack">
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">TypeScript</span>
+                    <span class="tech-tag">NodeJS</span>
+                    <span class="tech-tag">AWS</span>
+                    <span class="tech-tag">Microservices</span>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <span class="company-name">Experience-OS GmbH</span>
+                    <span class="experience-date">Jun 2020 - Sept 2021</span>
+                </div>
+                <p class="job-title">Software Engineer, EXOS App Core</p>
+                <p class="job-location">Berlin, Germany</p>
+                <ul>
+                    <li>Worked on multiple applications serving the project (Backend with Laravel, Frontend with ReactJS, Mobile with React Native)</li>
+                    <li>Participated in design and architecture reviews translated into built features</li>
+                </ul>
+                <div class="tech-stack">
+                    <span class="tech-tag">Laravel</span>
+                    <span class="tech-tag">ReactJS</span>
+                    <span class="tech-tag">React Native</span>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <span class="company-name">Excelcodes</span>
+                    <span class="experience-date">March 2018 - May 2020</span>
+                </div>
+                <p class="job-title">Engineer, Full Stack Team</p>
+                <p class="job-location">Cairo, Egypt</p>
+                <ul>
+                    <li>Worked as a software developer in agency style building and deploying apps/websites to clients</li>
+                    <li>Involved in the entire project lifecycle from architecture to design to development to deployment to customer feedback</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="glass-card">
+            <h2 class="section-title">Freelance</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3 class="project-name">Snapbooks</h3>
+                    <p class="project-description">
+                        Worked as a freelance senior software engineer for over 3 years building and maintaining products including a mobile application, website and landing page.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">TypeScript</span>
+                        <span class="tech-tag">ReactJS</span>
+                        <span class="tech-tag">React Native</span>
+                        <span class="tech-tag">AWS</span>
+                        <span class="tech-tag">CI/CD</span>
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">SAP B1</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3 class="project-name">Checkbee</h3>
+                    <p class="project-description">
+                        Built as a solo engineer from backend to frontend to deployment. The project includes a mobile app, a dashboard and a nicely built backend.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">TypeScript</span>
+                        <span class="tech-tag">ReactJS</span>
+                        <span class="tech-tag">React Native</span>
+                        <span class="tech-tag">NestJS</span>
+                        <span class="tech-tag">PostgreSQL</span>
+                        <span class="tech-tag">AWS Lambda</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+            <!-- Education Section -->
+            <section class="glass-card">
+                <h2 class="section-title">Education</h2>
+                <div class="education-item">
+                    <div class="education-icon">🎓</div>
+                    <div class="education-details">
+                        <h3>Ain Shams University</h3>
+                        <p>Bachelor's in Computer Science</p>
+                        <p>Cairo, Egypt | 2014 - 2018</p>
+                        <span class="gpa-badge">GPA: 3.4</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
